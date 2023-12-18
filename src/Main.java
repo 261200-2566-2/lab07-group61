@@ -1,17 +1,71 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
-public class Main {
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+interface MySet<E> extends Iterable<E> {
+    void add(E element);
+    boolean contains(E element);
+    void remove(E element);
+    int size();
+}
+
+class MyHashSet<E> implements MySet<E> {
+    private final Map<E, Boolean> map;
+
+    public MyHashSet() {
+        this.map = new HashMap<>();
+    }
+
+    @Override
+    public void add(E element) {
+        if (contains(element)) {
+            return;
+        }
+        map.put(element, true);
+    }
+
+    @Override
+    public boolean contains(E element) {
+        return map.containsKey(element);
+    }
+
+    @Override
+    public void remove(E element) {
+        if (contains(element)) {
+            map.remove(element);
+        }
+    }
+
+    @Override
+    public int size() {
+        return map.size();
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return map.keySet().iterator();
+    }
+}
+
+class Lab07 {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.print("Hello and welcome!");
+        MySet<String> mySet = new MyHashSet<>();
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        mySet.add("A");
+        mySet.add("B");
+        mySet.add("C");
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        System.out.println("Contains A: " + mySet.contains("A")); // true
+        System.out.println("Contains D: " + mySet.contains("D")); // false
+
+        System.out.println("Size: " + mySet.size()); // 3
+
+        mySet.remove("B");
+        System.out.println("Contains B after removal: " + mySet.contains("B")); // false
+
+        System.out.println("Elements in the set:");
+        for (String element : mySet) {
+            System.out.println(element);
         }
     }
 }
